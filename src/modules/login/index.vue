@@ -1,14 +1,13 @@
 <template>
-  <div class="page-index">
-    index
-    <a href="/#/login">login</a>
+  <div>
+    login
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'mainIndex',
+  name: 'login',
   components: {
   }
 }
