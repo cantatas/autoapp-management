@@ -1,5 +1,5 @@
 {
-  "name": "autoapp-management",
+  "name": "UDA",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -38,6 +38,11 @@
       "parser": "babel-eslint"
     },
     "rules": {}
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
     "> 1%",
