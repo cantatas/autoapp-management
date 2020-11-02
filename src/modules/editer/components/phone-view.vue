@@ -25,7 +25,7 @@
         @moved="movedEvent"
       >
         <a-button type="primary">
-          确定
+          {{ getEditeData.input.value || '编辑'}}
         </a-button>
         <div class="item-mask">
           <a @click="doEdit(item)"><a-icon type="edit" />编辑</a>
@@ -48,19 +48,29 @@ let layout = [
   } },
 ];
 
+import eventKeys from "@/commons/event-keys";
 export default {
   name: "EditerPhoneView",
   data() {
     return {
       layout,
+      getEditeData : {
+        input :{}
+      }
     };
   },
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
   },
+  mounted(){
+    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE,(res) => {
+       this.getEditeData = res;
+    })
+  },
   methods: {
     doEdit(item) {
+      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE,item)
       console.log("doEdit: ", item.name);
     },
     resizeEvent(newLayout) {
