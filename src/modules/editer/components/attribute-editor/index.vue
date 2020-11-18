@@ -5,23 +5,15 @@
         key="1"
         tab="编辑"
       >
-        <div class="form-view">
-          <div class="form-row">
-            基础设置
-          </div>
-          <div class="form-row">
-
-            <div class="form-col name">
-              名称：
-            </div>
-            <div class="form-col input">
-              <a-input @keyup="doEdit" v-model="postEditeData.input.value"  />
-            </div>
-          </div>
-        </div>
+        <baseSettings></baseSettings>
       </a-tab-pane>
       <a-tab-pane
         key="2"
+        tab="外观"
+      >
+      </a-tab-pane>
+      <a-tab-pane
+        key="3"
         tab="其他"
       >
       </a-tab-pane>
@@ -31,6 +23,7 @@
 
 <script>
 import eventKeys from "@/commons/event-keys";
+import baseSettings from "./base-settings.vue";
 export default {
   name: "EditerAttributeEditor",
   data() {
@@ -43,7 +36,9 @@ export default {
       }
     };
   },
-  components: {},
+  components: {
+    baseSettings
+  },
   mounted() {
     this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE, item => {
       this.getEditeData = item.config;
@@ -60,28 +55,9 @@ export default {
 
 <style lang="less" scoped>
 .attribute-editor {
-  width: 300px;
+  width: 400px;
   height: 100%;
   background-color: #f1f8ff;
   padding: 15px;
-}
-.form-view {
-  .form-row {
-    display: flex;
-    justify-content: flex-start;
-    .form-col {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-      flex: 1;
-      &.name {
-        flex: 3;
-        text-align: right;
-      }
-      &.input {
-        flex: 7;
-      }
-    }
-  }
 }
 </style>

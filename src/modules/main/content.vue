@@ -1,7 +1,7 @@
 <template>
   <div class="add-app-page">
     <div class="step-1">
-      <a @click="showModal" class="add-app">添加</a>
+      <a id="hejie" hejie-id="hejie" @click="showModal" class="add-app">添加</a>
     </div>
     <div class="stip-2 edit-container">
       

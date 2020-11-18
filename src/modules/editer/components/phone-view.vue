@@ -1,5 +1,6 @@
 <template>
   <div class="phone-view">
+    <!-- <iframe src="http://localhost:8081/h5.html#/" frameborder="0"></iframe> -->
     <grid-layout
       :layout.sync="layout"
       :col-num="16"
@@ -25,7 +26,7 @@
         @moved="movedEvent"
       >
         <a-button type="primary">
-          {{ getEditeData.input.value || '编辑'}}
+          {{ getEditeData.input.value || "编辑" }}
         </a-button>
         <div class="item-mask">
           <a @click="doEdit(item)"><a-icon type="edit" />编辑</a>
@@ -40,12 +41,20 @@
 import VueGridLayout from "vue-grid-layout";
 
 let layout = [
-  { x: 0, y: 0, w: 10, h: 1, i: "button", name: "ddd", config: {
-    type : 1,
-    event: 1,
-    text : '',
-    style : {}
-  } },
+  {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 1,
+    i: "button",
+    name: "ddd",
+    config: {
+      type: 1,
+      event: 1,
+      text: "",
+      style: {},
+    },
+  },
 ];
 
 import eventKeys from "@/commons/event-keys";
@@ -54,23 +63,28 @@ export default {
   data() {
     return {
       layout,
-      getEditeData : {
-        input :{}
-      }
+      getEditeData: {
+        input: {},
+      },
+      formDataList: [],
     };
   },
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
   },
-  mounted(){
-    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE,(res) => {
-       this.getEditeData = res;
-    })
+  mounted() {
+    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE, (res) => {
+      this.getEditeData = res;
+    });
+    this.$root.$on(eventKeys.ON_CLICK_FORM_ITEM, (res) => {
+      this.formDataList.push(res);
+      console.log("ON_CLICK_FORM_ITEM: ", res);
+    });
   },
   methods: {
     doEdit(item) {
-      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE,item)
+      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE, item);
       console.log("doEdit: ", item.name);
     },
     resizeEvent(newLayout) {
@@ -97,6 +111,10 @@ export default {
   box-shadow: 0 0 14px 0 rgba(22, 45, 61, 0.36);
   margin-top: 40px;
   margin-bottom: 80px;
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
 }
 /deep/ .vue-resizable-handle {
   z-index: 9999;

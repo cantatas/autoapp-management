@@ -2,7 +2,15 @@
   <div class="editer-page">
     <aHeader></aHeader>
     <aAside class="edite-body">
-      <div class="menu">
+      <a-tabs default-active-key="1" tab-position="left">
+        <a-tab-pane class="tabs-content-custom" key="1" tab="新增">
+          <formList></formList>
+        </a-tab-pane>
+        <a-tab-pane  class="tabs-content-custom" key="2" tab="其他">
+          Content of Tab 2
+        </a-tab-pane>
+      </a-tabs>
+      <!-- <div class="menu">
         <ul>
           <li>
             <a class="">
@@ -17,7 +25,7 @@
             <div class="page-thumbnail"></div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </aAside>
     <PageContent class="content">
       <div class="left">
@@ -34,8 +42,9 @@
 import aAside from "@components/aside.vue";
 import aHeader from "@components/header.vue";
 import PageContent from "@components/content.vue";
-import attributeEditor from "./components/attribute-editor.vue";
+import attributeEditor from "./components/attribute-editor/index.vue";
 import phoneView from "./components/phone-view.vue";
+import formList from "./components/form-list.vue";
 export default {
   name: "mainIndex",
   components: {
@@ -44,12 +53,31 @@ export default {
     PageContent,
     attributeEditor,
     phoneView,
+    formList,
   },
 };
 </script>
 
 <style lang="less" scoped>
 .edite-body {
+  /deep/ .ant-tabs{
+    height: 100%;
+  }
+  /deep/ .ant-tabs-nav-scroll{
+    padding-top: 20px;
+  }
+  /deep/ .ant-tabs-left-content{
+    padding-left: 0;
+  }
+  /deep/ .ant-tabs-left-bar,
+  /deep/ .ant-tabs-content{
+    height: 100%;
+  }
+  .tabs-content-custom{
+    background-color: #f1f8ff;
+    height: 100%;
+    width: 300px;
+  }
   .menu {
     width: 45px;
     background: #3899ec;
