@@ -8,22 +8,19 @@
 export default {
   name: "PageContent",
   data() {
-    return {
-    };
+    return {};
   },
-  components: {
-  },
-  methods: {
-  },
+  components: {},
+  methods: {},
 };
 </script>
 
 <style lang="less" scoped>
 .page-content {
   position: absolute;
-  left: 186px;
+  left: 130px;
   right: 0;
-  top: 50px;
+  top: 80px;
   display: flex;
 }
 </style>

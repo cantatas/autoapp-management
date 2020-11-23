@@ -14,18 +14,20 @@
       @ok="handleOk"
     >
       <div>
-        <a-input placeholder="页面名称" />
+        <a-input v-model="pageTitle" placeholder="页面名称" />
       </div>
     </a-modal>
   </div>
 </template>
 
 <script>
+import { addPageApi } from '@/api/pageList'
 export default {
   name: "MainContent",
   data() {
     return {
       visible: false,
+      pageTitle : ''
     };
   },
   components: {
@@ -37,9 +39,16 @@ export default {
     },
     handleOk(e) {
       console.log(e);
-      this.$router.push('/editer')
-      this.visible = false;
+      addPageApi({
+        title :this.pageTitle
+      }).then(() =>{
+        this.$router.push('/editer')
+        this.visible = false;
+      }).catch(() => {
+        this.$message.error('新增失败！');
+      })
     },
+
   },
 };
 </script>

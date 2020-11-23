@@ -13,24 +13,24 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in layout"
+        v-for="(item,index) in layout"
         :x="item.x"
         :y="item.y"
         :w="item.w"
         :h="item.h"
         :i="item.i"
-        :key="item.i"
+        :key="`${item.i}-${index}`"
         @resize="resizeEvent"
         @move="moveEvent"
         @resized="resizedEvent"
         @moved="movedEvent"
       >
-        <a-button type="primary">
-          {{ getEditeData.input.value || "编辑" }}
+        <a-button :key="index" type="primary">
+          {{ item.config.text }}
         </a-button>
         <div class="item-mask">
           <a @click="doEdit(item)"><a-icon type="edit" />编辑</a>
-          <a class="del" @click="doEdit(item)"><a-icon type="delete" />删除</a>
+          <a class="del" @click="doDelete(index)"><a-icon type="delete" />删除</a>
         </div>
       </grid-item>
     </grid-layout>
@@ -51,7 +51,7 @@ let layout = [
     config: {
       type: 1,
       event: 1,
-      text: "",
+      text: "按钮",
       style: {},
     },
   },
@@ -78,7 +78,20 @@ export default {
       this.getEditeData = res;
     });
     this.$root.$on(eventKeys.ON_CLICK_FORM_ITEM, (res) => {
-      this.formDataList.push(res);
+      this.layout.push({
+        x: 0,
+        y: 0,
+        w: 10,
+        h: 1,
+        i: "button",
+        name: "cccc",
+        config: {
+          type: 1,
+          event: 1,
+          text: "11122",
+          style: {},
+        },
+      });
       console.log("ON_CLICK_FORM_ITEM: ", res);
     });
   },
@@ -86,6 +99,10 @@ export default {
     doEdit(item) {
       this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE, item);
       console.log("doEdit: ", item.name);
+    },
+    doDelete(index){
+      console.log(index,'----')
+      this.layout.splice(index,0)
     },
     resizeEvent(newLayout) {
       console.log("resizeEvent: ", newLayout);

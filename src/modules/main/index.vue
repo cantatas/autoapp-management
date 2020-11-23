@@ -1,7 +1,12 @@
 <template>
   <div class="page-index">
     <aHeader></aHeader>
-    <aAside></aAside>
+    <aAside class="edite-body">
+      <a-tabs default-active-key="1" tab-position="left">
+        <a-tab-pane class="tabs-content-custom" key="1" tab="我的页面">
+        </a-tab-pane>
+      </a-tabs>
+    </aAside>
     <PageContent>
       <aContent></aContent>
     </PageContent>
@@ -23,3 +28,9 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+/deep/ .ant-tabs {
+  height: 100%;
+}
+</style>  

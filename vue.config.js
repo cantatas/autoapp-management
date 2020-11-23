@@ -5,6 +5,18 @@ function resolve(p) {
 }
 
 module.exports = {
+  devServer: {
+    port : 8099,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:7001/api',
+        changOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+    }
+  },
   css: {
     loaderOptions: {
       less: {
