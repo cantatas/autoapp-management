@@ -9,3 +9,6 @@ export function addPageApi(params) {
 export function getPageInfoApi(params) {
   return axios.get(`${module}getInfo`, { params }).then((res) => res.data);
 }
+export function deletePageById(params) {
+  return axios.post(`${module}deletePageById`, params, { encode: true });
+}

@@ -19,3 +19,4 @@ Vue.use(Empty)
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$warning = Modal.warning
+Vue.prototype.$error = Modal.error
