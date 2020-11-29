@@ -12,7 +12,7 @@ const routes = [{
     component: r => require.ensure([], () => r(require('./modules/main/index.vue')), 'module-index'),
   },
   {
-    path: '/editer',
+    path: '/editer/:id',
     name: 'editer',
     component: r => require.ensure([], () => r(require('./modules/editer/index.vue')), 'module-editer'),
   },

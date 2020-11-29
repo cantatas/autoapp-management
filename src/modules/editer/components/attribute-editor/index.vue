@@ -3,17 +3,22 @@
     <a-tabs type="card">
       <a-tab-pane
         key="1"
-        tab="编辑"
+        tab="基础"
       >
-        <baseSettings></baseSettings>
+        <component :config="defaultData" :is="configType[config.type]" />
       </a-tab-pane>
       <a-tab-pane
         key="2"
-        tab="外观"
+        tab="编辑"
       >
       </a-tab-pane>
       <a-tab-pane
         key="3"
+        tab="外观"
+      >
+      </a-tab-pane>
+      <a-tab-pane
+        key="4"
         tab="其他"
       >
       </a-tab-pane>
@@ -24,36 +29,49 @@
 <script>
 import eventKeys from "@/commons/event-keys";
 import baseSettings from "./base-settings.vue";
+import cInputAttr from "@/packages/input/attribute.vue";
+import cButtonAttr from "@/packages/button/attribute.vue";
+
 export default {
   name: "EditerAttributeEditor",
   data() {
     return {
       getEditeData: {},
-      postEditeData: {
-        input : {
-          value : ''
-        }
-      }
+      configType: {
+        2: "cInputAttr",
+        6: "cButtonAttr",
+      },
+      config : {},
+      defaultData : {},
     };
   },
   components: {
-    baseSettings
+    baseSettings,
+    cInputAttr,
+    cButtonAttr,
   },
   mounted() {
-    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE, item => {
-      this.getEditeData = item.config;
-      console.log("ON_ATTRIBUTE_EDITE: ", item);
+    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE, ({ config,defaultData }) => {
+      this.config = config;
+      this.defaultData = defaultData;
     });
   },
   methods: {
-    doEdit() {
-      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE, this.postEditeData);
-    }
+    
   }
 };
 </script>
 
 <style lang="less" scoped>
+
+/deep/ .ant-input,
+/deep/ .ant-form label {
+  font-size: 12px;
+  color:#666;
+}
+/deep/ .ant-form {
+  width: 100%;
+}
 .attribute-editor {
   width: 400px;
   height: 100%;

@@ -11,7 +11,7 @@
           <a>{{ item.title }}</a>
         </div>
         <div class="page-item-operate-area box">
-          <div class="o-item"><a href="">编辑</a></div>
+          <div class="o-item"><a @click="goToEditer(item)">编辑</a></div>
           <div class="o-item"><a @click="doRemovePage(item)">删除</a></div>
         </div>
       </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { addPageApi, getPageInfoApi, deletePageById } from "@/api/pageList";
+import { addPageApi, getPageListApi, deletePageByIdApi } from "@/api/pageList";
 export default {
   name: "MainContent",
   data() {
@@ -54,9 +54,8 @@ export default {
       console.log(e);
       addPageApi({
         title: this.pageTitle,
-      })
-        .then(() => {
-          this.$router.push("/editer");
+      }).then((res) => {
+          this.$router.push(`/editer/${res.data.msg._id}`);
           this.visible = false;
         })
         .catch(() => {
@@ -64,7 +63,7 @@ export default {
         });
     },
     getPageList() {
-      getPageInfoApi()
+      getPageListApi()
         .then((res) => {
           this.dataList = res;
         })
@@ -80,18 +79,20 @@ export default {
         okText: '确认',
         cancelText: '取消',
         onOk() {
-          deletePageById({ _id : item._id}).then(()=>{
+          deletePageByIdApi({ _id : item._id}).then(()=>{
             vm.getPageList()
           });
         },
       });
     },
+    goToEditer(item){
+      this.$router.push(`/editer/${item._id}`)
+    }
   },
 };
 </script>
 
 <style lang="less" scoped>
-@import "@/assets/less/base.less";
 .add-app-page {
   .add-app {
     width: 100px;

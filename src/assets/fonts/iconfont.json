@@ -1,0 +1,65 @@
+{
+  "id": "2235664",
+  "name": "autoapp",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9227191",
+      "name": "重置",
+      "font_class": "zhongzhi1",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "8941323",
+      "name": "重置",
+      "font_class": "zhongzhi",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "18296640",
+      "name": "保存",
+      "font_class": "baocun",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "976504",
+      "name": "新增",
+      "font_class": "xinzeng",
+      "unicode": "e7c9",
+      "unicode_decimal": 59337
+    },
+    {
+      "icon_id": "7467775",
+      "name": "发布",
+      "font_class": "fabu",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "8817450",
+      "name": "预览",
+      "font_class": "yulan",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "9618702",
+      "name": "删 除",
+      "font_class": "shanchu",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "13859893",
+      "name": "编 辑",
+      "font_class": "bianji",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    }
+  ]
+}

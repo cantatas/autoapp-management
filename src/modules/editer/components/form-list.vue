@@ -21,10 +21,12 @@ export default {
   data() {
     return {
       formDataList : [
-        { type : 'input' ,text:'输入框' },
-        { type : 'radio' ,text:'单选' },
-        { type : 'checkbox' ,text:'多选' },
-        { type : 'textare' ,text:'文本域' },
+        { type : 1 ,text:'logo' },
+        { type : 2 ,text:'输入框' },
+        { type : 3 ,text:'单选' },
+        { type : 4 ,text:'多选' },
+        { type : 5 ,text:'文本域' },
+        { type : 6 ,text:'按钮' },
       ]
     };
   },

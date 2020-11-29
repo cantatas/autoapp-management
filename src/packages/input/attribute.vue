@@ -10,43 +10,14 @@
           :wrapper-col="formItemLayout.wrapperCol"
           label="标题"
         >
-          <a-input
-            v-decorator="[
-              'username',
-              {
-                rules: [{ required: true, message: 'Please input your name' }],
-              },
-            ]"
-            placeholder="Please input your name"
-          />
+          <a-input v-model="config.title" placeholder="标题设置" />
         </a-form-item>
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="默认标题"
+          label="默认内容提示"
         >
-          <a-input
-            v-decorator="[
-              'nickname',
-              {
-                rules: [
-                  {
-                    required: checkNick,
-                    message: 'Please input your nickname',
-                  },
-                ],
-              },
-            ]"
-            placeholder="Please input your nickname"
-          />
-        </a-form-item>
-        <a-form-item
-          :label-col="formTailLayout.labelCol"
-          :wrapper-col="formTailLayout.wrapperCol"
-        >
-          <a-button type="primary" @click="check">
-            Check
-          </a-button>
+          <a-input v-model="config.placeholder" placeholder="默认内容提示设置" />
         </a-form-item>
       </a-form>
     </div>
@@ -55,16 +26,23 @@
 
 <script>
 const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 14 },
+  labelCol: { span: 6 },
+  wrapperCol: { span: 16 },
 };
 const formTailLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 14, offset: 4 },
+  labelCol: { span: 6 },
+  wrapperCol: { span: 16, offset: 4 },
 };
+import eventKeys from "@/commons/event-keys";
 
 export default {
-  name: "EditerAttributeEditorBase",
+  name: "appPageLibInputAttribute",
+  props: {
+    config: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       postEditeData: {},
@@ -72,10 +50,18 @@ export default {
       formItemLayout,
       formTailLayout,
       form: this.$form.createForm(this, { name: "dynamic_rule" }),
+      defaultData: {},
     };
   },
-  components: {},
-  mounted() {},
+  mounted() {
+    this.$root.$on(
+      eventKeys.ON_ATTRIBUTE_EDITE_UPDATE,
+      ({ config, defaultData }) => {
+        console.log(config);
+        this.defaultData = defaultData;
+      }
+    );
+  },
   methods: {
     doEdit() {},
     check() {

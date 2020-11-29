@@ -8,45 +8,12 @@
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="标题"
+          label="按钮名称"
         >
           <a-input
-            v-decorator="[
-              'username',
-              {
-                rules: [{ required: true, message: 'Please input your name' }],
-              },
-            ]"
-            placeholder="Please input your name"
+            v-model="config.buttonName"
+            placeholder="按钮名称设置"
           />
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="默认标题"
-        >
-          <a-input
-            v-decorator="[
-              'nickname',
-              {
-                rules: [
-                  {
-                    required: checkNick,
-                    message: 'Please input your nickname',
-                  },
-                ],
-              },
-            ]"
-            placeholder="Please input your nickname"
-          />
-        </a-form-item>
-        <a-form-item
-          :label-col="formTailLayout.labelCol"
-          :wrapper-col="formTailLayout.wrapperCol"
-        >
-          <a-button type="primary" @click="check">
-            Check
-          </a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -64,7 +31,13 @@ const formTailLayout = {
 };
 
 export default {
-  name: "EditerAttributeEditorBase",
+  name: "appPageLibInputAttribute",
+  props: {
+    config: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       postEditeData: {},

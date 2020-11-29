@@ -2,7 +2,7 @@
   <div class="phone-view">
     <!-- <iframe src="http://localhost:8081/h5.html#/" frameborder="0"></iframe> -->
     <grid-layout
-      :layout.sync="layout"
+      :layout="layout"
       :col-num="16"
       :row-height="40"
       :is-draggable="true"
@@ -13,7 +13,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="(item,index) in layout"
+        v-for="(item, index) in layout"
         :x="item.x"
         :y="item.y"
         :w="item.w"
@@ -25,12 +25,12 @@
         @resized="resizedEvent"
         @moved="movedEvent"
       >
-        <a-button :key="index" type="primary">
-          {{ item.config.text }}
-        </a-button>
+        <component ref="comData" :is="configType[item.config.type]" />
         <div class="item-mask">
-          <a @click="doEdit(item)"><a-icon type="edit" />编辑</a>
-          <a class="del" @click="doDelete(index)"><a-icon type="delete" />删除</a>
+          <a @click="doEdit(item, index)"><a-icon type="edit" />编辑</a>
+          <a class="del" @click="doDelete(index)"
+            ><a-icon type="delete" />删除</a
+          >
         </div>
       </grid-item>
     </grid-layout>
@@ -39,70 +39,58 @@
 
 <script>
 import VueGridLayout from "vue-grid-layout";
-
-let layout = [
-  {
-    x: 0,
-    y: 0,
-    w: 10,
-    h: 1,
-    i: "button",
-    name: "ddd",
-    config: {
-      type: 1,
-      event: 1,
-      text: "按钮",
-      style: {},
-    },
-  },
-];
-
+import { getInfoByIdApi } from "@/api/pageList";
+import { saveDataApi } from "@/api/editor";
 import eventKeys from "@/commons/event-keys";
+import cInput from "@/packages/input";
+import cLogo from "@/packages/logo";
+import cButton from "@/packages/button";
+
 export default {
   name: "EditerPhoneView",
   data() {
     return {
-      layout,
-      getEditeData: {
-        input: {},
-      },
+      layout: [],
       formDataList: [],
+      configType: {
+        1: "cLogo",
+        2: "cInput",
+        6: "cButton",
+      },
     };
   },
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
+    cInput,
+    cButton,
+    cLogo,
   },
   mounted() {
-    this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE, (res) => {
-      this.getEditeData = res;
-    });
-    this.$root.$on(eventKeys.ON_CLICK_FORM_ITEM, (res) => {
-      this.layout.push({
-        x: 0,
-        y: 0,
-        w: 10,
-        h: 1,
-        i: "button",
-        name: "cccc",
-        config: {
-          type: 1,
-          event: 1,
-          text: "11122",
-          style: {},
-        },
-      });
-      console.log("ON_CLICK_FORM_ITEM: ", res);
-    });
+    this.init();
   },
   methods: {
-    doEdit(item) {
-      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE, item);
-      console.log("doEdit: ", item.name);
+    init() {
+      getInfoByIdApi({ _id: this.$route.params.id }).then((res) => {
+        document.title = res[0].title;
+      });
+      this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE, (res) => {
+        this.getEditeData = res;
+      });
+      this.onEditItem();
+      this.onSaveData();
+      this.onReset();
     },
-    doDelete(index){
-      console.log(index,'----')
-      this.layout.splice(index,0)
+    doEdit(item, index) {
+      //编辑
+      this.$root.$emit(eventKeys.ON_ATTRIBUTE_EDITE, {
+        config: item.config,
+        defaultData: this.$refs.comData[index].defaultData,
+      });
+    },
+    doDelete(index) {
+      console.log(this.layout,index)
+      this.layout.splice(index, 1);
     },
     resizeEvent(newLayout) {
       console.log("resizeEvent: ", newLayout);
@@ -115,6 +103,41 @@ export default {
     },
     movedEvent(newLayout) {
       console.log("movedEvent: ", newLayout);
+    },
+    onSaveData() {
+      //保存
+      this.$root.$on(eventKeys.ON_CLICK_SAVE_DATA, () => {
+        saveDataApi({}).then((res) => {
+          if (!res.success) {
+            this.$message.error("保存失败");
+          }
+        });
+      });
+    },
+    onReset() {
+      //重置
+      this.$root.$on(eventKeys.ON_CLICK_RESET, () => {
+        this.layout.length = 0
+        console.log(this.layout.length)
+      });
+    },
+    onEditItem() {
+      this.$root.$on(eventKeys.ON_CLICK_FORM_ITEM, (res) => {
+        this.layout.push({
+          x: 0,
+          y: 0,
+          w: 20,
+          h: 1,
+          i: "button",
+          name: "cccc",
+          config: {
+            type: res.type,
+            event: 1,
+            text: "11122",
+            style: {},
+          },
+        });
+      });
     },
   },
 };
@@ -137,7 +160,7 @@ export default {
   z-index: 9999;
 }
 .vue-grid-item {
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
   border-radius: 4px;
 
   &:hover {
@@ -163,9 +186,7 @@ export default {
       align-items: center;
       justify-content: center;
       padding: 5px;
-      .anticon {
-        margin-right: 5px;
-      }
+      margin-right: 15px;
       &.del {
         color: #ffac11;
       }
