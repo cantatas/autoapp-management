@@ -1,13 +1,18 @@
 <template>
   <div class="phone-view">
-    <iframe ref="appIframe" src="./app/index.html" frameborder="0"></iframe>
+    <iframe
+      id="page-view"
+      ref="appIframe"
+      src="./app/index.html"
+      frameborder="0"
+    ></iframe>
   </div>
 </template>
 
 <script>
 // import { getInfoByIdApi } from "@/api/pageList";
 // import { saveDataApi } from "@/api/editor";
-// import eventKeys from "@/commons/event-keys";
+import eventKeys from "@/commons/event-keys";
 
 export default {
   name: "EditerPhoneView",
@@ -15,22 +20,49 @@ export default {
     return {
       layout: [],
       formDataList: [],
-      configType: {
+      beautifyType: {
+        //0=页面;1=logo;2=文本框;3=密码;5=按钮;6=文本按钮
         1: "cLogo",
         2: "cInput",
         6: "cButton",
       },
     };
   },
-  components: {
-  },
   mounted() {
-    this.$refs.appIframe.contentWindow.addEventListener("click", function(e){
-      console.log(e.target)
-    });
+    this.onClickPage();
+    this.onEditeFormAttrs();
+    this.setPageBeautify();
   },
   methods: {
-   },
+    onClickPage() {
+      this.$refs.appIframe.contentWindow.addEventListener("click", (e) => {
+        console.log(e.target, "--====--");
+        const formType = e.target.getAttribute("data-beautify-type");
+        this.$root.$emit(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, formType);
+      });
+    },
+    onEditeFormAttrs() {
+      this.$root.$on(
+        eventKeys.ON_EDITE_FORM_ATTRS,
+        ({ fontColor, borderStyle, borderColor, borderRadius }) => {
+          const formStyle = `
+          --input-border-color:${borderColor};
+          --input-border-radius:${borderRadius};
+          --input-border-style:${borderStyle};
+          `
+          this.$refs.appIframe.contentWindow.document.body.style=formStyle
+          console.log(fontColor, borderStyle, borderColor, borderRadius);
+        }
+      );
+    },
+    setPageBeautify() {
+      let iframe = this.$refs.appIframe.contentWindow;
+      iframe.window.onload = () => {
+        let cnames = iframe.document.body.className;
+        iframe.document.body.className = `${cnames} beautify`;
+      };
+    },
+  },
 };
 </script>
 

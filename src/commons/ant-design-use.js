@@ -9,6 +9,8 @@ import {
   message,
   Tooltip,
   Form,
+  Select,
+  Radio,
 } from 'ant-design-vue'
 import Vue from 'vue'
 Vue.use(Button)
@@ -19,6 +21,8 @@ Vue.use(Icon)
 Vue.use(Empty)
 Vue.use(Tooltip)
 Vue.use(Form)
+Vue.use(Select)
+Vue.use(Radio)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

@@ -5,4 +5,7 @@ export default {
   ON_CLICK_FORM_ITEM : 'on_click_form_item',
   ON_CLICK_SAVE_DATA : 'on_click_save_data',
   ON_CLICK_RESET : 'on_click_reset',
+  //new
+  ON_CLICK_BEAUTIFY_FORM_EL : 'on_click_eautify_form_el',
+  ON_EDITE_FORM_ATTRS : 'on_edite_form_attrs',
 };

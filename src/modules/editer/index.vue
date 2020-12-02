@@ -7,7 +7,7 @@
           <formList></formList>
         </a-tab-pane>
         <a-tab-pane  class="tabs-content-custom" key="2" tab="其他">
-          Content of Tab 2
+          
         </a-tab-pane>
       </a-tabs>
       <!-- <div class="menu">
@@ -32,7 +32,7 @@
         <phoneView></phoneView>
       </div>
       <div class="right">
-        <attribute-editor></attribute-editor>
+        <form-editor></form-editor>
       </div>
     </PageContent>
   </div>
@@ -42,7 +42,8 @@
 import aAside from "@components/aside.vue";
 import aHeader from "@components/header.vue";
 import PageContent from "@components/content.vue";
-import attributeEditor from "./components/attribute-editor/index.vue";
+// import attributeEditor from "./components/attribute-editor/index.vue";
+import formEditor from "./components/form-editor/index.vue";
 import phoneView from "./components/phone-view.vue";
 import formList from "./components/form-list.vue";
 export default {
@@ -51,7 +52,7 @@ export default {
     aAside,
     aHeader,
     PageContent,
-    attributeEditor,
+    formEditor,
     phoneView,
     formList,
   },

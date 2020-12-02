@@ -1,60 +1,37 @@
 <template>
   <div class="form-view">
     <div class="form-row">
-      <h3>设置</h3>
-    </div>
-    <div class="form-row">
       <a-form :form="form">
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="必填"
+          label="字体颜色"
         >
-          <a-select default-value="0">
-            <a-select-option value="0">
-              否
-            </a-select-option>
-            <a-select-option value="1">
-              是
-            </a-select-option>
-          </a-select>
+          <a-input v-model="dataFrom.fontColor" placeholder="名字体颜色设置" />
         </a-form-item>
+
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="名称"
+          label="边框样式"
         >
-          <a-input v-model="config.title" placeholder="名称设置" />
+          <a-input v-model="dataFrom.borderStyle" placeholder="边框样式设置" />
         </a-form-item>
+
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="提示文字"
+          label="边框颜色"
         >
-          <a-input v-model="config.placeholder" placeholder="提示文字设置" />
+          <a-input v-model="dataFrom.borderColor" placeholder="边框颜色设置" />
         </a-form-item>
+
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="类型"
+          label="边框半圆"
         >
-          <a-select default-value="0">
-            <a-select-option value="0">
-              文字
-            </a-select-option>
-            <a-select-option value="1">
-              密码
-            </a-select-option>
-            <a-select-option value="2">
-              手机号码
-            </a-select-option>
-            <a-select-option value="3">
-              日期
-            </a-select-option>
-            <a-select-option value="4">
-              邮箱
-            </a-select-option>
-          </a-select>
+          <a-input v-model="dataFrom.borderRadius" placeholder="边框半圆设置" />
         </a-form-item>
       </a-form>
     </div>
@@ -72,8 +49,11 @@ const formTailLayout = {
 };
 import eventKeys from "@/commons/event-keys";
 
+import Vue from "vue";
+import vcolorpicker from "vcolorpicker";
+Vue.use(vcolorpicker);
 export default {
-  name: "appPageLibInputAttribute",
+  name: "appPageLibInputUI",
   props: {},
   data() {
     return {
@@ -82,14 +62,32 @@ export default {
       formTailLayout,
       form: this.$form.createForm(this, { name: "dynamic_rule" }),
       config: {
-        required : 0
+        required: 0,
       },
+      dataFrom: {
+        fontColor: "",
+        borderStyle: "",
+        borderColor: "",
+        borderRadius: "",
+      },
+      timer : null
     };
   },
   mounted() {
     this.$root.$on(eventKeys.ON_ATTRIBUTE_EDITE_UPDATE, ({ config }) => {
       console.log(config);
     });
+  },
+  watch: {
+    dataFrom: {
+      handler(newVal) {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.$root.$emit(eventKeys.ON_EDITE_FORM_ATTRS, newVal);
+        },1000)
+      },
+      deep: true,
+    },
   },
   methods: {
     doEdit() {},

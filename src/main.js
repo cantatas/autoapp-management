@@ -11,4 +11,9 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   router,
+  methods: {
+    $(ele){
+      return document.querySelector(ele)
+    }
+  },
 }).$mount('#app')
