@@ -9,6 +9,7 @@ import {
   message,
   Tooltip,
   Form,
+  InputNumber,
   Select,
   Radio,
 } from 'ant-design-vue'
@@ -20,6 +21,7 @@ Vue.use(Tabs)
 Vue.use(Icon)
 Vue.use(Empty)
 Vue.use(Tooltip)
+Vue.use(InputNumber)
 Vue.use(Form)
 Vue.use(Select)
 Vue.use(Radio)

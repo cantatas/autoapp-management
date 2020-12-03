@@ -1,37 +1,36 @@
 <template>
   <div class="form-view">
     <div class="form-row">
-      <a-form :form="form">
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="字体颜色"
-        >
+      <a-form :form="form" v-bind="formItemLayout">
+        <a-form-item label="字体颜色">
           <a-input v-model="dataFrom.fontColor" placeholder="名字体颜色设置" />
         </a-form-item>
-
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="边框样式"
-        >
-          <a-input v-model="dataFrom.borderStyle" placeholder="边框样式设置" />
+        <a-form-item label="边框样式">
+          <a-select v-model="dataFrom.FormBorderClass" default-value="">
+            <a-select-option value="">
+              底部有边框
+            </a-select-option>
+            <a-select-option value="no-border">
+              无边框
+            </a-select-option>
+            <a-select-option :value="fullBorder">
+              有边框
+            </a-select-option>
+          </a-select>
         </a-form-item>
-
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="边框颜色"
-        >
-          <a-input v-model="dataFrom.borderColor" placeholder="边框颜色设置" />
-        </a-form-item>
-
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="边框半圆"
-        >
+        <a-form-item v-if="dataFrom.FormBorderClass === fullBorder" label="边框半圆">
           <a-input v-model="dataFrom.borderRadius" placeholder="边框半圆设置" />
+        </a-form-item>
+        <a-form-item label="边框宽度">
+          <a-input-number
+            @change="onBorderThickChange"
+            v-model="borderThick"
+            :min="1"
+            :max="3"
+          />
+        </a-form-item>
+        <a-form-item label="边框颜色">
+          <a-input v-model="dataFrom.borderColor" placeholder="边框颜色设置" />
         </a-form-item>
       </a-form>
     </div>
@@ -66,11 +65,15 @@ export default {
       },
       dataFrom: {
         fontColor: "",
-        borderStyle: "",
+        FormBorderClass: "",
         borderColor: "",
+        borderThick: 1,
         borderRadius: "",
+        formType: 2,
       },
-      timer : null
+      borderThick: 1,
+      timer: null,
+      fullBorder : 'full-border border-radius'
     };
   },
   mounted() {
@@ -81,10 +84,10 @@ export default {
   watch: {
     dataFrom: {
       handler(newVal) {
-        clearTimeout(this.timer)
+        clearTimeout(this.timer);
         this.timer = setTimeout(() => {
           this.$root.$emit(eventKeys.ON_EDITE_FORM_ATTRS, newVal);
-        },1000)
+        }, 1000);
       },
       deep: true,
     },
@@ -97,6 +100,9 @@ export default {
           console.info("success");
         }
       });
+    },
+    onBorderThickChange(val) {
+      this.dataFrom.borderThick = val;
     },
   },
 };

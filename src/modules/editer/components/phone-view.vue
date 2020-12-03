@@ -10,48 +10,97 @@
 </template>
 
 <script>
-// import { getInfoByIdApi } from "@/api/pageList";
-// import { saveDataApi } from "@/api/editor";
+import { getInfoByIdApi } from "@/api/pageList";
+import { saveDataApi } from "@/api/editor";
 import eventKeys from "@/commons/event-keys";
 
 export default {
   name: "EditerPhoneView",
   data() {
     return {
-      layout: [],
-      formDataList: [],
       beautifyType: {
-        //0=页面;1=logo;2=文本框;3=密码;5=按钮;6=文本按钮
+        //0=页面; 1=logo; 2=文本框; 3=密码;5=按钮; 6=文本按钮
         1: "cLogo",
         2: "cInput",
         6: "cButton",
       },
+      editeData: {},
     };
   },
   mounted() {
-    this.onClickPage();
-    this.onEditeFormAttrs();
-    this.setPageBeautify();
+    this.init();
   },
   methods: {
+    init() {
+      getInfoByIdApi({ _id: this.$route.params.id }).then((res) => {
+        document.title = res[0].title;
+      });
+      this.onClickPage();
+      this.onEditeFormAttrs();
+      this.onSaveData();
+      this.setPageBeautify();
+    },
+    onSaveData() {
+      //保存
+      this.$root.$on(eventKeys.ON_CLICK_SAVE_DATA, () => {
+        const params = {
+          page_id: this.$route.params.id,
+          formAttribute: this.editeData,
+        };
+        saveDataApi(params).then((res) => {
+          if (!res.success) {
+            this.$message.error("保存失败");
+          }
+        });
+      });
+    },
     onClickPage() {
       this.$refs.appIframe.contentWindow.addEventListener("click", (e) => {
-        console.log(e.target, "--====--");
+        console.log(e.target, "--====--target");
         const formType = e.target.getAttribute("data-beautify-type");
         this.$root.$emit(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, formType);
       });
     },
     onEditeFormAttrs() {
+      //表单属性编辑
       this.$root.$on(
         eventKeys.ON_EDITE_FORM_ATTRS,
-        ({ fontColor, borderStyle, borderColor, borderRadius }) => {
-          const formStyle = `
+        ({
+          fontColor,
+          FormBorderClass,
+          borderColor,
+          borderThick,
+          borderRadius,
+          formType,
+        }) => {
+
+          // 样式设置
+          const FormTitleColor = `
+          --input-title-color:${fontColor};
           --input-border-color:${borderColor};
           --input-border-radius:${borderRadius};
-          --input-border-style:${borderStyle};
-          `
-          this.$refs.appIframe.contentWindow.document.body.style=formStyle
-          console.log(fontColor, borderStyle, borderColor, borderRadius);
+          --input-border-thick:${borderThick}px;
+          `;
+
+          //接口参数
+          this.editeData = {
+            formType,
+            FormTitleColor,
+            FormBorderClass,
+          };
+          //页面样式更改
+          const pageInstance = this.$refs.appIframe.contentWindow.document.body;
+          pageInstance.style = FormTitleColor
+          ;
+          const bForm = pageInstance.querySelector(".beautify-form");
+          const noBorder = "no-border";
+          const fllBorder = "full-border border-radius";
+          if (bForm) {
+            bForm.className = `${bForm.className
+              .replace(noBorder, "")
+              .replace(fllBorder, "")} ${FormBorderClass} `; //form表单样式
+          }
+          console.log(fontColor, FormBorderClass, borderColor, borderRadius);
         }
       );
     },
