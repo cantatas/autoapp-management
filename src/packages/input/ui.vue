@@ -21,7 +21,7 @@
         <a-form-item v-if="dataFrom.FormBorderClass === fullBorder" label="边框半圆">
           <a-input v-model="dataFrom.borderRadius" placeholder="边框半圆设置" />
         </a-form-item>
-        <a-form-item label="边框宽度">
+        <a-form-item v-if="dataFrom.FormBorderClass !== 'no-border'" label="边框宽度">
           <a-input-number
             @change="onBorderThickChange"
             v-model="borderThick"
@@ -29,7 +29,7 @@
             :max="3"
           />
         </a-form-item>
-        <a-form-item label="边框颜色">
+        <a-form-item  v-if="dataFrom.FormBorderClass !== 'no-border'" label="边框颜色">
           <a-input v-model="dataFrom.borderColor" placeholder="边框颜色设置" />
         </a-form-item>
       </a-form>

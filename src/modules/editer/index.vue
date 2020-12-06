@@ -2,30 +2,30 @@
   <div class="editer-page">
     <aHeader></aHeader>
     <aAside class="edite-body">
-      <a-tabs default-active-key="1" tab-position="left">
-        <a-tab-pane class="tabs-content-custom" key="1" tab="新增">
-          <formList></formList>
-        </a-tab-pane>
-        <a-tab-pane  class="tabs-content-custom" key="2" tab="其他">
-          
-        </a-tab-pane>
-      </a-tabs>
-      <!-- <div class="menu">
+      <div class="menu">
         <ul>
-          <li>
-            <a class="">
-              page
+          <li :class="{ active: activeIndex === 0 }" @click="onChange(0)">
+            <a class="menu-item">
+              <div><i class="iconfont iconyemian"></i></div>
+              <div>页面</div>
+            </a>
+          </li>
+          <li :class="{ active: activeIndex === 1 }" @click="onChange(1)">
+            <a class="menu-item">
+              <div><i class="iconfont iconkongjianshu"></i></div>
+              <div>控件</div>
             </a>
           </li>
         </ul>
       </div>
       <div class="page-show-list">
-        <ul>
-          <li>
-            <div class="page-thumbnail"></div>
-          </li>
-        </ul>
-      </div> -->
+        <div v-show="activeIndex === 0">
+          <pageList></pageList>
+        </div>
+        <div v-show="activeIndex === 1">
+          控件
+        </div>
+      </div>
     </aAside>
     <PageContent class="content">
       <div class="left">
@@ -45,57 +45,60 @@ import PageContent from "@components/content.vue";
 // import attributeEditor from "./components/attribute-editor/index.vue";
 import formEditor from "./components/form-editor/index.vue";
 import phoneView from "./components/phone-view.vue";
-import formList from "./components/form-list.vue";
+import pageList from "./components/page-list.vue";
 export default {
   name: "mainIndex",
+  data() {
+    return {
+      activeIndex: 0,
+    };
+  },
   components: {
     aAside,
     aHeader,
     PageContent,
     formEditor,
     phoneView,
-    formList,
+    pageList,
+  },
+  methods: {
+    onChange(index) {
+      this.activeIndex = index;
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
 .edite-body {
-  /deep/ .ant-tabs{
-    height: 100%;
-  }
-  /deep/ .ant-tabs-nav-scroll{
-    padding-top: 20px;
-  }
-  /deep/ .ant-tabs-left-content{
-    padding-left: 0;
-  }
-  /deep/ .ant-tabs-left-bar,
-  /deep/ .ant-tabs-content{
-    height: 100%;
-  }
-  .tabs-content-custom{
-    background-color: #f1f8ff;
-    height: 100%;
-    width: 300px;
-  }
   .menu {
-    width: 45px;
-    background: #3899ec;
+    width: 55px;
     height: 100%;
+    background: #3899ec;
     li {
+      padding: 15px 0;
+      &.active,
+      &:hover {
+        background: #4eb7f5;
+        a {
+          color: #2b5672;
+        }
+      }
       a {
         display: block;
         color: #fff;
-        height: 50px;
-        line-height: 50px;
+        div {
+          i {
+            font-size: 28px;
+          }
+        }
       }
     }
   }
   .page-show-list {
     position: absolute;
     top: 0;
-    left: 45px;
+    left: 55px;
     height: 100%;
     width: 230px;
     background-color: #f1f8ff;
@@ -104,6 +107,7 @@ export default {
     padding: 14px 0;
     vertical-align: top;
     overflow: auto;
+    color: #333;
     .page-thumbnail {
       position: relative;
       width: 150px;
@@ -112,7 +116,6 @@ export default {
       background: #fff;
       overflow: hidden;
       margin: 15px auto;
-
     }
   }
 }

@@ -68,7 +68,7 @@ export default {
       width: 50px;
       height: 100%;
       &:hover{
-        background: #f1f8ff
+        background: #eaf7ff
       }
     }
 }

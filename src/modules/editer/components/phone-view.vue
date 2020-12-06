@@ -3,7 +3,7 @@
     <iframe
       id="page-view"
       ref="appIframe"
-      src="./app/index.html"
+      src="./app/#/login"
       frameborder="0"
     ></iframe>
   </div>
@@ -28,6 +28,7 @@ export default {
     };
   },
   mounted() {
+    this.setPagePath();
     this.init();
   },
   methods: {
@@ -40,6 +41,10 @@ export default {
       this.onSaveData();
       this.setPageBeautify();
     },
+    setPagePath(){
+        const sedata = this.$refs.appIframe.contentWindow.sessionStorage.getItem("beautify-page-list")
+        this.$refs.appIframe.src = `./app/#${JSON.parse(sedata)[0].path}`;
+    },
     onSaveData() {
       //保存
       this.$root.$on(eventKeys.ON_CLICK_SAVE_DATA, () => {
@@ -48,15 +53,16 @@ export default {
           formAttribute: this.editeData,
         };
         saveDataApi(params).then((res) => {
-          if (!res.success) {
+          if (!res.data.success) {
             this.$message.error("保存失败");
+          }else{
+            this.$message.success("保存成功");
           }
         });
       });
     },
     onClickPage() {
       this.$refs.appIframe.contentWindow.addEventListener("click", (e) => {
-        console.log(e.target, "--====--target");
         const formType = e.target.getAttribute("data-beautify-type");
         this.$root.$emit(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, formType);
       });
@@ -90,8 +96,7 @@ export default {
           };
           //页面样式更改
           const pageInstance = this.$refs.appIframe.contentWindow.document.body;
-          pageInstance.style = FormTitleColor
-          ;
+          pageInstance.style = FormTitleColor;
           const bForm = pageInstance.querySelector(".beautify-form");
           const noBorder = "no-border";
           const fllBorder = "full-border border-radius";

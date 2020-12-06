@@ -20,7 +20,7 @@ export default {
   position: absolute;
   left: 130px;
   right: 0;
-  top: 80px;
+  top: 50px;
   display: flex;
 }
 </style>

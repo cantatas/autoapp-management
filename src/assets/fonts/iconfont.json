@@ -6,11 +6,18 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "9227191",
-      "name": "重置",
-      "font_class": "zhongzhi1",
-      "unicode": "e607",
-      "unicode_decimal": 58887
+      "icon_id": "3058909",
+      "name": "控件数",
+      "font_class": "kongjianshu",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    },
+    {
+      "icon_id": "5963815",
+      "name": "页面",
+      "font_class": "yemian",
+      "unicode": "e698",
+      "unicode_decimal": 59032
     },
     {
       "icon_id": "8941323",
