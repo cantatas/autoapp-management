@@ -94,6 +94,7 @@ export default {
 
 <style lang="less" scoped>
 .add-app-page {
+  padding-top:20px; 
   .add-app {
     width: 100px;
     height: 100px;
