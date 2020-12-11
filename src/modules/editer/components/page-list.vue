@@ -3,16 +3,18 @@
     <ul>
       <li
         class="page-item box"
-        :class="{ 'active' : activeIndex === index }"
-        @click="doEdite(item,index)"
+        :class="{ active: activeIndex === index }"
+        @click="doEdite(item, index)"
         :key="index"
         v-for="(item, index) in pageList"
       >
-        <div class="page-desc box">
-          <span class="id">{{ item.meta.id }}</span>
-        </div>
-        <div class="page-desc box">
-          <span>{{ item.meta.name }}</span>
+        <div v-if="item.meta">
+          <div class="page-desc box">
+            <span class="id">{{ item.meta.id }}</span>
+          </div>
+          <div class="page-desc box">
+            <span>{{ item.meta.name }}</span>
+          </div>
         </div>
       </li>
     </ul>
@@ -20,13 +22,14 @@
 </template>
 
 <script>
+import eventKeys from "@/commons/event-keys";
 export default {
   name: "EditerPageList",
   data() {
     return {
       pageView: null,
       pageList: [],
-      activeIndex : 0,
+      activeIndex: 0,
     };
   },
   components: {},
@@ -44,9 +47,12 @@ export default {
         );
       }
     },
-    doEdite(item,index) {
-      this.activeIndex = index
-      this.pageView.src = `./app/#${item.path}`;
+    doEdite(item, index) {
+      if (item.meta) {
+        this.activeIndex = index;
+        this.pageView.src = `./app/#${item.path}`;
+        this.$root.$emit(eventKeys.ON_SELECTED_LEFT_PAGE, item);
+      }
     },
   },
 };
@@ -68,7 +74,7 @@ export default {
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     background: #fff;
-    &.active{
+    &.active {
       box-shadow: 0 0 15px #4eb7f5;
     }
     .page-desc {

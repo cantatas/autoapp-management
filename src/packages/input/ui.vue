@@ -101,7 +101,7 @@ export default {
         }
       });
     },
-    onBorderThickChange(val) {
+    onBorderThickChange(val) {//边框
       this.dataFrom.borderThick = val;
     },
   },

@@ -11,7 +11,6 @@
           label="按钮名称"
         >
           <a-input
-            v-model="config.buttonName"
             placeholder="按钮名称设置"
           />
         </a-form-item>
@@ -33,14 +32,9 @@ const formTailLayout = {
 export default {
   name: "appPageLibInputAttribute",
   props: {
-    config: {
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
     return {
-      postEditeData: {},
       checkNick: false,
       formItemLayout,
       formTailLayout,

@@ -3,15 +3,15 @@
     <a-tabs type="card">
       <a-tab-pane
         key="1"
-        tab="编辑"
-      >
-        <component :is="formAttrMap[formType]" />
-      </a-tab-pane>
-      <a-tab-pane
-        key="2"
         tab="外观"
       >
         <component :is="formUIMap[formType]" />
+      </a-tab-pane>
+      <a-tab-pane
+        key="2"
+        tab="编辑"
+      >
+        <component :is="formAttrMap[formType]" />
       </a-tab-pane>
       <a-tab-pane
         key="3"
@@ -52,6 +52,7 @@ export default {
     cButtonUI,
   },
   mounted() {
+    // 点击表单
     this.$root.$on(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, (formType) => {
       this.formType = formType;
       console.log(formType,'--====---')

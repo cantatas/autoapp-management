@@ -7,5 +7,6 @@ export default {
   ON_CLICK_RESET : 'on_click_reset',
   //new
   ON_CLICK_BEAUTIFY_FORM_EL : 'on_click_eautify_form_el',
-  ON_EDITE_FORM_ATTRS : 'on_edite_form_attrs',
+  ON_EDITE_FORM_ATTRS : 'on_edite_form_attrs', //编辑表单属性
+  ON_SELECTED_LEFT_PAGE : 'on_selected_left_page', //选择左侧页面
 };

@@ -1,11 +1,17 @@
 <template>
-  <div class="phone-view">
-    <iframe
-      id="page-view"
-      ref="appIframe"
-      src="./app/#/login"
-      frameborder="0"
-    ></iframe>
+  <div>
+    <div class="page-head">
+      <span>{{ pageId }}</span
+      >{{ pageName }}
+    </div>
+    <div class="phone-view">
+      <iframe
+        id="page-view"
+        ref="appIframe"
+        src="./app/#/login"
+        frameborder="0"
+      ></iframe>
+    </div>
   </div>
 </template>
 
@@ -25,6 +31,8 @@ export default {
         6: "cButton",
       },
       editeData: {},
+      pageId: "",
+      pageName: "",
     };
   },
   mounted() {
@@ -39,11 +47,19 @@ export default {
       this.onClickPage();
       this.onEditeFormAttrs();
       this.onSaveData();
+      this.onClickLeftPage();
       this.setPageBeautify();
     },
-    setPagePath(){
-        const sedata = this.$refs.appIframe.contentWindow.sessionStorage.getItem("beautify-page-list")
-        this.$refs.appIframe.src = `./app/#${JSON.parse(sedata)[0].path}`;
+    setPagePath() {
+      const sedata = this.$refs.appIframe.contentWindow.sessionStorage.getItem(
+        "beautify-page-list"
+      );
+      const defData = JSON.parse(sedata)[0];
+      if (defData.meta) {
+        this.$refs.appIframe.src = `./app/#${defData.path}`;
+        this.pageName = defData.meta.name;
+        this.pageId = defData.meta.id;
+      }
     },
     onSaveData() {
       //保存
@@ -55,19 +71,23 @@ export default {
         saveDataApi(params).then((res) => {
           if (!res.data.success) {
             this.$message.error("保存失败");
-          }else{
+          } else {
             this.$message.success("保存成功");
           }
         });
       });
     },
     onClickPage() {
+      //点击表单
       this.$refs.appIframe.contentWindow.addEventListener("click", (e) => {
         const formType = e.target.getAttribute("data-beautify-type");
         this.$root.$emit(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, formType);
       });
     },
     onEditeFormAttrs() {
+      let inputStyle = "";
+      let buttnStyle = "";
+      let formStyle = "";
       //表单属性编辑
       this.$root.$on(
         eventKeys.ON_EDITE_FORM_ATTRS,
@@ -77,26 +97,41 @@ export default {
           borderColor,
           borderThick,
           borderRadius,
+          bgColor,
           formType,
         }) => {
-
           // 样式设置
-          const FormTitleColor = `
-          --input-title-color:${fontColor};
-          --input-border-color:${borderColor};
-          --input-border-radius:${borderRadius};
-          --input-border-thick:${borderThick}px;
-          `;
 
+          //0=页面; 1=logo; 2=文本框; 3=密码;5=按钮; 6=文本按钮
+          if (formType === 2) {
+            inputStyle = `
+                    --input-title-color:${fontColor};
+                    --input-border-color:${borderColor};
+                    --input-border-radius:${borderRadius};
+                    --input-border-thick:${borderThick}px;
+                    `;
+          } else if (formType === 5) {
+            buttnStyle = `
+                    --btn-font-color:${fontColor};
+                    --btn-border-color:${borderColor};
+                    --btn-border-radius:${borderRadius};
+                    --btn-bg-color:${bgColor};
+                    --btn-border-thick:${borderThick}px;
+                    `;
+          }
+          formStyle = `${inputStyle}${buttnStyle}`;
           //接口参数
           this.editeData = {
             formType,
-            FormTitleColor,
+            formStyle,
             FormBorderClass,
           };
           //页面样式更改
           const pageInstance = this.$refs.appIframe.contentWindow.document.body;
-          pageInstance.style = FormTitleColor;
+          console.log(
+            `pageInstance.style:${JSON.stringify(pageInstance.style)}`
+          );
+          pageInstance.style = `${formStyle}`;
           const bForm = pageInstance.querySelector(".beautify-form");
           const noBorder = "no-border";
           const fllBorder = "full-border border-radius";
@@ -108,6 +143,18 @@ export default {
           console.log(fontColor, FormBorderClass, borderColor, borderRadius);
         }
       );
+    },
+    onClickLeftPage() {
+      console.log("onClickLeftPage");
+      this.$root.$on(eventKeys.ON_SELECTED_LEFT_PAGE, (item) => {
+        console.log(item);
+        this.pageName = item.meta.name;
+        this.pageId = item.meta.id;
+      });
+    },
+    formStyleMap(formType) {
+      let type = {};
+      return type[formType];
     },
     setPageBeautify() {
       let iframe = this.$refs.appIframe.contentWindow;
@@ -121,12 +168,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.page-head {
+  height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  font-weight: 600;
+  span {
+    font-size: 22px;
+    margin-right: 10px;
+  }
+}
 .phone-view {
   width: 375px;
   height: 667px;
   background: url(../../../assets/imgs/phone-bg.png);
   box-shadow: 0 0 14px 0 rgba(22, 45, 61, 0.36);
-  margin-top: 40px;
   margin-bottom: 80px;
   iframe {
     width: 100%;
