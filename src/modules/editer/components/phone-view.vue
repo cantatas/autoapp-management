@@ -86,7 +86,8 @@ export default {
     },
     onEditeFormAttrs() {
       let inputStyle = "";
-      let buttnStyle = "";
+      let buttonStyle = "";
+      let textButtonStyle = "";
       let formStyle = "";
       //表单属性编辑
       this.$root.$on(
@@ -98,6 +99,7 @@ export default {
           borderThick,
           borderRadius,
           bgColor,
+          textDecoration,
           formType,
         }) => {
           // 样式设置
@@ -111,15 +113,21 @@ export default {
                     --input-border-thick:${borderThick}px;
                     `;
           } else if (formType === 5) {
-            buttnStyle = `
+            buttonStyle = `
                     --btn-font-color:${fontColor};
                     --btn-border-color:${borderColor};
                     --btn-border-radius:${borderRadius};
                     --btn-bg-color:${bgColor};
                     --btn-border-thick:${borderThick}px;
                     `;
+          } else if (formType === 6) {
+            textButtonStyle = `
+                    --text-btn-font-color:${fontColor};
+                    --text-btn-text-decoration:${textDecoration};
+                    `;
           }
-          formStyle = `${inputStyle}${buttnStyle}`;
+          //表单样式拼接
+          formStyle = `${inputStyle || ''}${buttonStyle || ''}${textButtonStyle || ''}`;
           //接口参数
           this.editeData = {
             formType,
@@ -128,17 +136,14 @@ export default {
           };
           //页面样式更改
           const pageInstance = this.$refs.appIframe.contentWindow.document.body;
-          console.log(
-            `pageInstance.style:${JSON.stringify(pageInstance.style)}`
-          );
           pageInstance.style = `${formStyle}`;
           const bForm = pageInstance.querySelector(".beautify-form");
           const noBorder = "no-border";
           const fllBorder = "full-border border-radius";
-          if (bForm) {
+          if (bForm && FormBorderClass) {
             bForm.className = `${bForm.className
               .replace(noBorder, "")
-              .replace(fllBorder, "")} ${FormBorderClass} `; //form表单样式
+              .replace(fllBorder, "")} ${FormBorderClass || ''} `; //form表单样式
           }
           console.log(fontColor, FormBorderClass, borderColor, borderRadius);
         }

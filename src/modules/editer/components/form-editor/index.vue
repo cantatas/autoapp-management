@@ -28,6 +28,7 @@ import cInputAttr from "@/packages/input/attribute.vue";
 import cButtonAttr from "@/packages/button/attribute.vue";
 import cInputUI from "@/packages/input/ui.vue";
 import cButtonUI from "@/packages/button/ui.vue";
+import cTextButtonUI from "@/packages/textButton/ui.vue";
 
 export default {
   name: "EditerAttributeEditor",
@@ -42,6 +43,7 @@ export default {
       formUIMap: {
         2 : "cInputUI",
         5 : "cButtonUI",
+        6 : "cTextButtonUI",
       },
     };
   },
@@ -50,6 +52,7 @@ export default {
     cButtonAttr,
     cInputUI,
     cButtonUI,
+    cTextButtonUI,
   },
   mounted() {
     // 点击表单
