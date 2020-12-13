@@ -24,12 +24,6 @@ export default {
   name: "EditerPhoneView",
   data() {
     return {
-      beautifyType: {
-        //0=页面; 1=logo; 2=文本框; 3=密码;5=按钮; 6=文本按钮
-        1: "cLogo",
-        2: "cInput",
-        6: "cButton",
-      },
       editeData: {},
       pageId: "",
       pageName: "",
@@ -88,6 +82,7 @@ export default {
       let inputStyle = "";
       let buttonStyle = "";
       let textButtonStyle = "";
+      let listMenuStyle = "";
       let formStyle = "";
       //表单属性编辑
       this.$root.$on(
@@ -100,6 +95,13 @@ export default {
           borderRadius,
           bgColor,
           textDecoration,
+          listMenuFontColor,
+          listMenuFontSize,
+          listMenuColumnNum,
+          listMenuIconBoxShadow,
+          listMenuIconBorderRadius,
+          listMenuIconBgColor,
+          listMenuIconMarginBottom,
           formType,
         }) => {
           // 样式设置
@@ -125,9 +127,20 @@ export default {
                     --text-btn-font-color:${fontColor};
                     --text-btn-text-decoration:${textDecoration};
                     `;
+          } else if (formType === 7) {
+            listMenuStyle = `
+                  --list-menu-font-color:${listMenuFontColor};
+                  --list-menu-font-size:${listMenuFontSize}px;
+                  --list-menu-column-num:${listMenuColumnNum};
+                  --list-menu-box-shadow:${listMenuIconBoxShadow};
+                  --list-menu-border-radius: ${listMenuIconBorderRadius};
+                  --list-menu-icon-bgcolor: ${listMenuIconBgColor};
+                  --list-menu-icon-margin-bottom: ${listMenuIconMarginBottom}px;
+                    `;
           }
           //表单样式拼接
-          formStyle = `${inputStyle || ''}${buttonStyle || ''}${textButtonStyle || ''}`;
+          formStyle = `${inputStyle || ""}${buttonStyle ||
+            ""}${textButtonStyle || ""}${listMenuStyle}`;
           //接口参数
           this.editeData = {
             formType,
@@ -143,7 +156,7 @@ export default {
           if (bForm && FormBorderClass) {
             bForm.className = `${bForm.className
               .replace(noBorder, "")
-              .replace(fllBorder, "")} ${FormBorderClass || ''} `; //form表单样式
+              .replace(fllBorder, "")} ${FormBorderClass || ""} `; //form表单样式
           }
           console.log(fontColor, FormBorderClass, borderColor, borderRadius);
         }

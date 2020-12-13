@@ -29,13 +29,14 @@ import cButtonAttr from "@/packages/button/attribute.vue";
 import cInputUI from "@/packages/input/ui.vue";
 import cButtonUI from "@/packages/button/ui.vue";
 import cTextButtonUI from "@/packages/textButton/ui.vue";
+import cMenuList from "@/packages/menuList/ui.vue";
 
 export default {
   name: "EditerAttributeEditor",
   data() {
     return {
       formType : 0,
-       //0=页面;1=logo;2=文本框;3=密码;5=按钮;6=文本按钮
+       //0=页面;1=logo;2=文本框;3=密码;5=按钮;6=文本按钮;7=菜单列表
       formAttrMap: {
         2 : "cInputAttr",
         5 : "cButtonAttr",
@@ -44,6 +45,7 @@ export default {
         2 : "cInputUI",
         5 : "cButtonUI",
         6 : "cTextButtonUI",
+        7 : "cMenuList",
       },
     };
   },
@@ -53,12 +55,12 @@ export default {
     cInputUI,
     cButtonUI,
     cTextButtonUI,
+    cMenuList,
   },
   mounted() {
     // 点击表单
     this.$root.$on(eventKeys.ON_CLICK_BEAUTIFY_FORM_EL, (formType) => {
       this.formType = formType;
-      console.log(formType,'--====---')
     });
   },
   methods: {
