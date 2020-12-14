@@ -54,7 +54,8 @@ export default {
       console.log(e);
       addPageApi({
         title: this.pageTitle,
-      }).then((res) => {
+      })
+        .then((res) => {
           this.$router.push(`/editer/${res.data.msg._id}`);
           this.visible = false;
         })
@@ -74,27 +75,27 @@ export default {
     doRemovePage(item) {
       let vm = this;
       this.$confirm({
-        title: '提示',
-        content: '确定删除？',
-        okText: '确认',
-        cancelText: '取消',
+        title: "提示",
+        content: "确定删除？",
+        okText: "确认",
+        cancelText: "取消",
         onOk() {
-          deletePageByIdApi({ _id : item._id}).then(()=>{
-            vm.getPageList()
+          deletePageByIdApi({ _id: item._id }).then(() => {
+            vm.getPageList();
           });
         },
       });
     },
-    goToEditer(item){
-      this.$router.push(`/editer/${item._id}`)
-    }
+    goToEditer(item) {
+      this.$router.push(`/editer/${item._id}`);
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
 .add-app-page {
-  padding-top:20px; 
+  padding-top: 20px;
   .add-app {
     width: 100px;
     height: 100px;

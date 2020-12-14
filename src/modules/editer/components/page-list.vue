@@ -64,11 +64,11 @@ export default {
   padding: 20px 0;
   padding-bottom: 60px;
   .page-item {
-    width: 158px;
-    height: 263px;
+    width: 128px;
+    height: 213px;
     flex-flow: column;
     margin: 0 auto;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border: 1px solid #e8e8e8;
     border-radius: 5px;
     cursor: pointer;

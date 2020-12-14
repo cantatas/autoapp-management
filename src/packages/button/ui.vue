@@ -3,7 +3,8 @@
     <div class="form-row">
       <a-form :form="form" v-bind="formItemLayout">
         <a-form-item label="字体颜色">
-          <a-input v-model="dataFrom.fontColor" placeholder="名字体颜色设置" />
+          <colorPicker v-model="dataFrom.fontColor" @change="handleChangeColor"></colorPicker>
+          <!-- <a-input v-model="dataFrom.fontColor" placeholder="名字体颜色设置" /> -->
         </a-form-item>
         <a-form-item label="边框半圆">
           <a-input v-model="dataFrom.borderRadius" placeholder="边框半圆设置" />
@@ -85,6 +86,7 @@ export default {
   },
   methods: {
     doEdit() {},
+    handleChangeColor() {},
     check() {
       this.form.validateFields((err) => {
         if (!err) {

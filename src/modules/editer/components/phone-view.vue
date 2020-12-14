@@ -177,6 +177,7 @@ export default {
     setPageBeautify() {
       let iframe = this.$refs.appIframe.contentWindow;
       iframe.window.onload = () => {
+        iframe.sessionStorage.setItem('parent-beautify',1)
         let cnames = iframe.document.body.className;
         iframe.document.body.className = `${cnames} beautify`;
       };
