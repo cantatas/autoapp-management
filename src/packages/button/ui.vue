@@ -3,8 +3,8 @@
     <div class="form-row">
       <a-form :form="form" v-bind="formItemLayout">
         <a-form-item label="字体颜色">
-          <colorPicker v-model="dataFrom.fontColor" @change="handleChangeColor"></colorPicker>
-          <!-- <a-input v-model="dataFrom.fontColor" placeholder="名字体颜色设置" /> -->
+          <photoshop v-model="isShowColors" @onColorChange="onColorChange"></photoshop>
+          <a-input v-model="dataFrom.fontColor" @click="isShowColors = true" placeholder="名字体颜色设置" />
         </a-form-item>
         <a-form-item label="边框半圆">
           <a-input v-model="dataFrom.borderRadius" placeholder="边框半圆设置" />
@@ -15,6 +15,7 @@
             v-model="borderThick"
             :min="1"
             :max="3"
+            suffix="px"
           />
         </a-form-item>
         <a-form-item label="边框颜色">
@@ -38,10 +39,8 @@ const formTailLayout = {
   wrapperCol: { span: 16, offset: 4 },
 };
 import eventKeys from "@/commons/event-keys";
+import photoshop from "../components/coloer.vue";
 
-import Vue from "vue";
-import vcolorpicker from "vcolorpicker";
-Vue.use(vcolorpicker);
 export default {
   name: "appPageLibButtonUI",
   props: {},
@@ -65,7 +64,8 @@ export default {
       },
       borderThick: 1,
       timer: null,
-      fullBorder : 'full-border border-radius'
+      fullBorder : 'full-border border-radius',
+      isShowColors: false,
     };
   },
   mounted() {
@@ -84,8 +84,14 @@ export default {
       deep: true,
     },
   },
+  components: {
+    photoshop
+  },
   methods: {
-    doEdit() {},
+    onColorChange(val) {
+      // this.isShowColors = false
+      this.dataFrom.fontColor = val.hex
+    },
     handleChangeColor() {},
     check() {
       this.form.validateFields((err) => {

@@ -12,6 +12,8 @@ import {
   InputNumber,
   Select,
   Radio,
+  Row,
+  Col,
 } from 'ant-design-vue'
 import Vue from 'vue'
 Vue.use(Button)
@@ -25,6 +27,8 @@ Vue.use(InputNumber)
 Vue.use(Form)
 Vue.use(Select)
 Vue.use(Radio)
+Vue.use(Row)
+Vue.use(Col)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = Modal.confirm

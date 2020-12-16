@@ -16,33 +16,52 @@
 </template>
 
 <script>
-import { getInfoByIdApi } from "@/api/pageList";
-import { saveDataApi } from "@/api/editor";
+import { saveDataApi, updateDataApi, getInfoByIdApi } from "@/api/editor";
 import eventKeys from "@/commons/event-keys";
 
 export default {
   name: "EditerPhoneView",
   data() {
     return {
-      editeData: {},
+      editeData: {
+        _id: "",
+        formAttribute: {
+          formStyle: null,
+          FormBorderClass: null,
+        },
+      },
       pageId: "",
       pageName: "",
     };
   },
   mounted() {
-    this.setPagePath();
-    this.init();
+    this.getDataInfo();
+    this.onClickPage();
+    this.onEditeFormAttrs();
+    this.onSaveData();
+    this.onClickLeftPage();
   },
   methods: {
     init() {
-      getInfoByIdApi({ _id: this.$route.params.id }).then((res) => {
-        document.title = res[0].title;
-      });
-      this.onClickPage();
-      this.onEditeFormAttrs();
-      this.onSaveData();
-      this.onClickLeftPage();
+      this.setPagePath();
       this.setPageBeautify();
+    },
+    getDataInfo() {
+      getInfoByIdApi({ _id: this.$route.params.id })
+        .then((res) => {
+          this.editeData = res.data;
+          this.init();
+
+          this.setStyleValue(
+            res.data.formAttribute.formStyle,
+            res.data.formAttribute.FormBorderClass
+          );
+        })
+        .catch((err) => {
+          console.log(err.message, "--===-- error");
+          this.$message.error("获取详情失败");
+          this.init();
+        });
     },
     setPagePath() {
       const sedata = this.$refs.appIframe.contentWindow.sessionStorage.getItem(
@@ -58,17 +77,28 @@ export default {
     onSaveData() {
       //保存
       this.$root.$on(eventKeys.ON_CLICK_SAVE_DATA, () => {
-        const params = {
+        let params = {
           page_id: this.$route.params.id,
-          formAttribute: this.editeData,
+          formAttribute: this.editeData.formAttribute,
         };
-        saveDataApi(params).then((res) => {
-          if (!res.data.success) {
-            this.$message.error("保存失败");
-          } else {
-            this.$message.success("保存成功");
-          }
-        });
+        if (this.editeData._id) {
+          params._id = this.editeData._id;
+          updateDataApi(params).then((res) => {
+            if (!res.data.success) {
+              this.$message.error("更新失败");
+            } else {
+              this.$message.success("更新成功");
+            }
+          });
+        } else {
+          saveDataApi(params).then((res) => {
+            if (!res.data.success) {
+              this.$message.error("保存失败");
+            } else {
+              this.$message.success("保存成功");
+            }
+          });
+        }
       });
     },
     onClickPage() {
@@ -101,6 +131,7 @@ export default {
           listMenuIconBoxShadow,
           listMenuIconBorderRadius,
           listMenuIconBgColor,
+          listMenuIconColor,
           listMenuIconMarginBottom,
           formType,
         }) => {
@@ -135,39 +166,40 @@ export default {
                   --list-menu-box-shadow:${listMenuIconBoxShadow};
                   --list-menu-border-radius: ${listMenuIconBorderRadius};
                   --list-menu-icon-bgcolor: ${listMenuIconBgColor};
+                  --list-menu-icon-color: ${listMenuIconColor};
                   --list-menu-icon-margin-bottom: ${listMenuIconMarginBottom}px;
                     `;
           }
           //表单样式拼接
-          formStyle = `${inputStyle || ""}${buttonStyle ||
-            ""}${textButtonStyle || ""}${listMenuStyle}`;
+          formStyle = `${inputStyle || ""}${buttonStyle || 
+          ""}${textButtonStyle || ""}${listMenuStyle}`;
           //接口参数
-          this.editeData = {
-            formType,
-            formStyle,
-            FormBorderClass,
-          };
-          //页面样式更改
-          const pageInstance = this.$refs.appIframe.contentWindow.document.body;
-          pageInstance.style = `${formStyle}`;
-          const bForm = pageInstance.querySelector(".beautify-form");
-          const noBorder = "no-border";
-          const fllBorder = "full-border border-radius";
-          if (bForm && FormBorderClass) {
-            bForm.className = `${bForm.className
-              .replace(noBorder, "")
-              .replace(fllBorder, "")} ${FormBorderClass || ""} `; //form表单样式
-          }
-          console.log(fontColor, FormBorderClass, borderColor, borderRadius);
+          this.editeData.formAttribute.formStyle = formStyle;
+          this.editeData.formAttribute.FormBorderClass = FormBorderClass;
+          this.setStyleValue(formStyle, FormBorderClass);
         }
       );
     },
     onClickLeftPage() {
-      console.log("onClickLeftPage");
       this.$root.$on(eventKeys.ON_SELECTED_LEFT_PAGE, (item) => {
         console.log(item);
         this.pageName = item.meta.name;
         this.pageId = item.meta.id;
+      });
+    },
+    setStyleValue(formStyle, FormBorderClass) {
+      this.$nextTick(() => {
+        //页面样式更改
+        const pageInstance = this.$refs.appIframe.contentWindow.document.body;
+        pageInstance.style = formStyle;
+        const bForm = pageInstance.querySelector(".beautify-form");
+        const noBorder = "no-border";
+        const fllBorder = "full-border border-radius";
+        if (bForm && FormBorderClass) {
+          bForm.className = `${bForm.className
+            .replace(noBorder, "")
+            .replace(fllBorder, "")} ${FormBorderClass || ""} `; //form表单样式
+        }
       });
     },
     formStyleMap(formType) {
@@ -177,7 +209,7 @@ export default {
     setPageBeautify() {
       let iframe = this.$refs.appIframe.contentWindow;
       iframe.window.onload = () => {
-        iframe.sessionStorage.setItem('parent-beautify',1)
+        iframe.sessionStorage.setItem("parent-beautify", 1);
         let cnames = iframe.document.body.className;
         iframe.document.body.className = `${cnames} beautify`;
       };

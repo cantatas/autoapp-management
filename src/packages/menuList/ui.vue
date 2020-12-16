@@ -43,6 +43,9 @@
         <a-form-item label="图标背景色">
           <a-input v-model="dataFrom.listMenuIconBgColor" placeholder="图标背景色设置" />
         </a-form-item>
+        <a-form-item label="图标颜色">
+          <a-input v-model="dataFrom.listMenuIconColor" placeholder="图标颜色设置" />
+        </a-form-item>
       </a-form>
     </div>
   </div>
@@ -59,9 +62,6 @@ const formTailLayout = {
 };
 import eventKeys from "@/commons/event-keys";
 
-import Vue from "vue";
-import vcolorpicker from "vcolorpicker";
-Vue.use(vcolorpicker);
 export default {
   name: "appPageLibMenuListUI",
   props: {},
@@ -80,6 +80,7 @@ export default {
         listMenuColumnNum: '33.33%',
         listMenuIconBoxShadow: '0 6px 15px -3px #000',
         listMenuIconBgColor: '#fff',
+        listMenuIconColor: '#105595',
         listMenuIconBorderRadius: '100%',
         listMenuIconMarginBottom: 10,
         formType: 7,

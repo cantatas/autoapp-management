@@ -48,9 +48,6 @@ const formTailLayout = {
 };
 import eventKeys from "@/commons/event-keys";
 
-import Vue from "vue";
-import vcolorpicker from "vcolorpicker";
-Vue.use(vcolorpicker);
 export default {
   name: "appPageLibInputUI",
   props: {},
