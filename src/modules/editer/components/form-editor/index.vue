@@ -30,6 +30,7 @@ import cInputUI from "@/packages/input/ui.vue";
 import cButtonUI from "@/packages/button/ui.vue";
 import cTextButtonUI from "@/packages/textButton/ui.vue";
 import cMenuList from "@/packages/menuList/ui.vue";
+import cMenuMain from "@/packages/menuMain/ui.vue";
 
 export default {
   name: "EditerAttributeEditor",
@@ -46,6 +47,7 @@ export default {
         5 : "cButtonUI",
         6 : "cTextButtonUI",
         7 : "cMenuList",
+        8 : "cMenuMain",
       },
     };
   },
@@ -56,6 +58,7 @@ export default {
     cButtonUI,
     cTextButtonUI,
     cMenuList,
+    cMenuMain,
   },
   mounted() {
     // 点击表单

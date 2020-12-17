@@ -113,6 +113,7 @@ export default {
       let buttonStyle = "";
       let textButtonStyle = "";
       let listMenuStyle = "";
+      let mainMenuStyle = "";
       let formStyle = "";
       //表单属性编辑
       this.$root.$on(
@@ -133,6 +134,12 @@ export default {
           listMenuIconBgColor,
           listMenuIconColor,
           listMenuIconMarginBottom,
+          mainMenufontColor,
+          mainMenufontSize,
+          mainMenubgColor,
+          mainMenufontIconSize,
+          mainMenuIconColor,
+          mainMenuIconMarginBottom,
           formType,
         }) => {
           // 样式设置
@@ -169,10 +176,18 @@ export default {
                   --list-menu-icon-color: ${listMenuIconColor};
                   --list-menu-icon-margin-bottom: ${listMenuIconMarginBottom}px;
                     `;
+          } else if (formType === 8) {
+            mainMenuStyle = `
+                  --main-menu-font-color:${mainMenufontColor};
+                  --main-menu-font-size:${mainMenufontSize}px;
+                  --main-menu-bgcolor: ${mainMenubgColor};
+                  --main-menu-font-icon-size:${mainMenufontIconSize}px;
+                  --main-menu-icon-color: ${mainMenuIconColor};
+                  --main-menu-icon-margin-bottom : ${mainMenuIconMarginBottom}px;
+                    `;
           }
           //表单样式拼接
-          formStyle = `${inputStyle || ""}${buttonStyle || 
-          ""}${textButtonStyle || ""}${listMenuStyle}`;
+          formStyle = `${inputStyle}${buttonStyle}${textButtonStyle}${listMenuStyle}${mainMenuStyle}`;
           //接口参数
           this.editeData.formAttribute.formStyle = formStyle;
           this.editeData.formAttribute.FormBorderClass = FormBorderClass;
