@@ -17,6 +17,8 @@ module.exports = {
       },
     }
   },
+  publicPath :'./',
+  outputDir :'admin',
   css: {
     loaderOptions: {
       less: {

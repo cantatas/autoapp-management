@@ -35,6 +35,7 @@ export default {
     };
   },
   mounted() {
+    this.setPageBeautify();
     this.getDataInfo();
     this.onClickPage();
     this.onEditeFormAttrs();
@@ -44,18 +45,18 @@ export default {
   methods: {
     init() {
       this.setPagePath();
-      this.setPageBeautify();
     },
     getDataInfo() {
       getInfoByIdApi({ _id: this.$route.params.id })
         .then((res) => {
-          this.editeData = res.data;
-          this.init();
-
-          this.setStyleValue(
-            res.data.formAttribute.formStyle,
-            res.data.formAttribute.FormBorderClass
-          );
+          if( res.data ){
+            this.editeData = res.data;
+            this.init();
+            this.setStyleValue(
+              res.data.formAttribute.formStyle,
+              res.data.formAttribute.FormBorderClass
+            );
+          }
         })
         .catch((err) => {
           console.log(err.message, "--===-- error");
@@ -69,7 +70,7 @@ export default {
       );
       const defData = JSON.parse(sedata)[0];
       if (defData.meta) {
-        this.$refs.appIframe.src = `./app/#${defData.path}`;
+        this.$refs.appIframe.src = `./app/#${defData.path}?r_=${new Date().getTime()}`;
         this.pageName = defData.meta.name;
         this.pageId = defData.meta.id;
       }
