@@ -82,7 +82,7 @@ export default {
         listMenuIconBgColor: '#fff',
         listMenuIconColor: '#105595',
         listMenuIconBorderRadius: '100%',
-        listMenuIconMarginBottom: 10,
+        listMenuIconMarginBottom: 20,
         formType: 7,
       },
       timer: null,

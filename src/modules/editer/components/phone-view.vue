@@ -206,7 +206,7 @@ export default {
     setStyleValue(formStyle, FormBorderClass) {
       this.$nextTick(() => {
         //页面样式更改
-        const pageInstance = this.$refs.appIframe.contentWindow.document.body;
+        const pageInstance = this.$refs.appIframe.contentWindow.document.querySelector('#app');
         pageInstance.style = formStyle;
         const bForm = pageInstance.querySelector(".beautify-form");
         const noBorder = "no-border";
@@ -226,8 +226,8 @@ export default {
       let iframe = this.$refs.appIframe.contentWindow;
       iframe.window.onload = () => {
         iframe.sessionStorage.setItem("parent-beautify", 1);
-        let cnames = iframe.document.body.className;
-        iframe.document.body.className = `${cnames} beautify`;
+        let cnames = iframe.document.querySelector('#app').className;
+        iframe.document.querySelector('#app').className = `${cnames} beautify`;
       };
     },
   },
